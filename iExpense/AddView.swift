@@ -18,6 +18,10 @@ struct AddView: View {
     
     static let types = ["Buisness", "Personal"]
     
+    @State private var alertVisable = false
+    let errorTitle = "Error, invalid user selction"
+    let errorMessage = "Please enter a valid numerical price"
+    
     var body: some View {
         NavigationView {
             Form {
@@ -37,8 +41,13 @@ struct AddView: View {
                     self.expenses.items.append(item)
                     //we need this wrapped value to actuall dig inside the presentation mode
                     self.presentationMode.wrappedValue.dismiss()//this will toggle showingAddExpense in the Content View, dismissing AddView
+                } else {
+                    alertVisable.toggle()
                 }
             })
+            .alert(isPresented: $alertVisable) {
+                Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("Try Again?")))
+            }
         }
     }
 }
